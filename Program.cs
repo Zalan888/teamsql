@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,24 @@ namespace ConsoleApp2
         }
 
         public static void DeleteData() {
-            
+
+            conn.Connection.Open();
+
+            Console.WriteLine("Adja meg az updatelni kívánt személy ID-jét!");
+            int id = Convert.ToInt32(Console.ReadLine());
+
+            string sql = $"DELETE FROM `players`WHERE id = {id}";
+            MySqlCommand cmd = new MySqlCommand(sql, conn.Connection);
+            MySqlDataReader dr = cmd.ExecuteReader();
+            conn.Connection.Open();
+
+            for (int i = 0; i < id; i++)
+            {
+                dr.Read();
+            }
+
+            conn.Connection.Close();
+
         }
 
         public static void UpdateData()
@@ -93,6 +111,7 @@ namespace ConsoleApp2
         {
             GetAllData();
             SetData();
+            DeleteData();
         }
     }
 }
